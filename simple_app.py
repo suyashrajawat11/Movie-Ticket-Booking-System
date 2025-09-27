@@ -5,17 +5,28 @@ Minimal version to ensure deployment works
 """
 
 import os
-from flask import Flask, jsonify
+from flask import Flask, jsonify, make_response
 from flask_cors import CORS
 
 # Create Flask app
 app = Flask(__name__)
 
-# Configure CORS - Allow all origins for now
-CORS(app, 
-     origins=['*'],
-     allow_headers=['Content-Type', 'Authorization'],
-     methods=['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'])
+# Configure CORS - Allow all origins
+CORS(app, resources={
+    r"/*": {
+        "origins": "*",
+        "methods": ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+        "allow_headers": ["Content-Type", "Authorization"]
+    }
+})
+
+# Add CORS headers to all responses
+@app.after_request
+def after_request(response):
+    response.headers.add('Access-Control-Allow-Origin', '*')
+    response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization')
+    response.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS')
+    return response
 
 # Root route
 @app.route('/')
@@ -25,6 +36,17 @@ def root():
         'status': 'running',
         'version': '1.0.0'
     })
+
+# Handle preflight OPTIONS requests
+@app.route('/api/<path:path>', methods=['OPTIONS'])
+@app.route('/api/', methods=['OPTIONS'])
+@app.route('/api', methods=['OPTIONS'])
+def handle_options(path=None):
+    response = make_response()
+    response.headers.add('Access-Control-Allow-Origin', '*')
+    response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization')
+    response.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS')
+    return response
 
 # API routes
 @app.route('/api')
