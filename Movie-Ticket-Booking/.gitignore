@@ -40,7 +40,8 @@ instance/
 
 # Environment variables
 .env
-.flaskenv
+# Keep .flaskenv for local development
+# .flaskenv
 
 # IDE
 .vscode/
