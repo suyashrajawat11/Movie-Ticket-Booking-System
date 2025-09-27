@@ -1,5 +1,5 @@
 import os
-from app import create_app
+from app import create_app, db
 
 # Use production config in production environment
 config_name = os.environ.get('FLASK_ENV', 'development')
@@ -10,8 +10,15 @@ else:
 
 app = create_app(config_name)
 
+# Initialize database tables
+with app.app_context():
+    try:
+        db.create_all()
+        print("✅ Database tables created successfully!")
+    except Exception as e:
+        print(f"⚠️ Database initialization error: {e}")
+
 if __name__ == '__main__':
-    # Railway provides PORT environment variable
-    port = int(os.environ.get('PORT', 8080))
+    port = int(os.environ.get('PORT', 10000))
     debug = config_name == 'development'
     app.run(host='0.0.0.0', port=port, debug=debug)

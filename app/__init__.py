@@ -28,4 +28,13 @@ def create_app(config_name='default'):
     from .routes.api import api_bp
     app.register_blueprint(api_bp, url_prefix='/api')
     
+    # Add root route
+    @app.route('/')
+    def root():
+        return {
+            'message': 'Movie Ticket Booking System',
+            'api_base': '/api',
+            'status': 'running'
+        }
+    
     return app
