@@ -5,7 +5,6 @@ from flask import Flask, jsonify, request
 app = Flask(__name__)
 
 # Simple CORS handling - no external library
-{{ ... }}
 @app.after_request
 def after_request(response):
     response.headers['Access-Control-Allow-Origin'] = '*'
