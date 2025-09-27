@@ -21,12 +21,16 @@ export default function Booking() {
   })() }, [])
 
   const filteredShows = shows.filter(show => {
+    // If movie is selected, only show shows for that movie
     if (selection.movie_id && show.movie_id !== Number(selection.movie_id)) return false
+    
+    // If theater is selected, only show shows for halls in that theater
     if (selection.theater_id) {
       const theater = theaters.find(t => t.id === Number(selection.theater_id))
       const hallIds = theater?.halls?.map(h => h.id) || []
       if (!hallIds.includes(show.hall_id)) return false
     }
+    
     return true
   })
 
@@ -140,9 +144,11 @@ export default function Booking() {
               <option value="">Select</option>
               {filteredShows.map(s => {
                 const movie = movies.find(m => m.id === s.movie_id)
+                const theater = theaters.find(t => t.halls?.some(h => h.id === s.hall_id))
+                const hall = theater?.halls?.find(h => h.id === s.hall_id)
                 return (
                   <option key={s.id} value={s.id}>
-                    {movie?.title || 'Unknown'} • Hall {s.hall_id} • {new Date(s.start_time).toLocaleString()}
+                    {movie?.title || 'Unknown'} • {theater?.name || 'Unknown Theater'} • {hall?.name || `Hall ${s.hall_id}`} • {new Date(s.start_time).toLocaleString()} • ₹{s.price}
                   </option>
                 )
               })}
