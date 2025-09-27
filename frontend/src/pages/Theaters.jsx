@@ -31,10 +31,15 @@ export default function Theaters() {
         ...theater,
         halls: theater.halls.map(h => ({ ...h, total_seats: h.rows?.reduce((a,r)=>a+r.seat_count,0) || 0 }))
       }
-      await createTheater(payload)
+      const newTheater = await createTheater(payload)
+      console.log('Theater created:', newTheater)
       setTheater({ name: '', address: '', city: '', country: '', halls: [] })
-      load()
-    } catch (e) { alert(e.message) }
+      await load()
+      alert('Theater created successfully!')
+    } catch (e) { 
+      console.error('Error creating theater:', e)
+      alert('Error creating theater: ' + e.message) 
+    }
   }
 
   return (

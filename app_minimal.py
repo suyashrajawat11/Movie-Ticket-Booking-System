@@ -266,6 +266,74 @@ def create_booking():
         'message': 'Booking confirmed successfully!'
     })
 
+@app.route('/api/analytics/overview')
+def analytics_overview():
+    return jsonify({
+        'total_bookings': 2847,
+        'total_revenue': 1245680,
+        'total_theaters': 2,
+        'total_movies': 5,
+        'popular_movies': [
+            {'title': 'Avengers: Endgame', 'bookings': 485, 'revenue': 195400},
+            {'title': 'The Dark Knight', 'bookings': 412, 'revenue': 226600},
+            {'title': 'Interstellar', 'bookings': 298, 'revenue': 268200},
+            {'title': 'Inception', 'bookings': 356, 'revenue': 134280},
+            {'title': 'Parasite', 'bookings': 267, 'revenue': 81360}
+        ],
+        'theater_performance': [
+            {'name': 'PVR Cinemas Phoenix', 'bookings': 645, 'revenue': 287250},
+            {'name': 'INOX R City', 'bookings': 598, 'revenue': 329400}
+        ],
+        'daily_revenue': [
+            {'date': '2024-01-08', 'revenue': 156780, 'bookings': 387},
+            {'date': '2024-01-09', 'revenue': 189450, 'bookings': 445},
+            {'date': '2024-01-10', 'revenue': 167890, 'bookings': 398},
+            {'date': '2024-01-11', 'revenue': 198760, 'bookings': 467},
+            {'date': '2024-01-12', 'revenue': 234560, 'bookings': 523},
+            {'date': '2024-01-13', 'revenue': 298240, 'bookings': 628},
+            {'date': '2024-01-14', 'revenue': 312890, 'bookings': 645}
+        ],
+        'genre_distribution': [
+            {'genre': 'Action', 'count': 2, 'revenue': 422000},
+            {'genre': 'Sci-Fi', 'count': 2, 'revenue': 402480},
+            {'genre': 'Thriller', 'count': 1, 'revenue': 81360}
+        ]
+    })
+
+@app.route('/api/analytics/movie/<int:movie_id>')
+def movie_analytics(movie_id):
+    movie_data = {
+        1: {'title': 'Avengers: Endgame', 'bookings': 485, 'revenue': 195400, 'rating': 4.8},
+        2: {'title': 'The Dark Knight', 'bookings': 412, 'revenue': 226600, 'rating': 4.9},
+        3: {'title': 'Inception', 'bookings': 356, 'revenue': 134280, 'rating': 4.7},
+        4: {'title': 'Parasite', 'bookings': 267, 'revenue': 81360, 'rating': 4.6},
+        5: {'title': 'Interstellar', 'bookings': 298, 'revenue': 268200, 'rating': 4.8}
+    }
+    
+    data = movie_data.get(movie_id, {'title': 'Unknown Movie', 'bookings': 150, 'revenue': 45000, 'rating': 4.0})
+    
+    return jsonify({
+        'movie_id': movie_id,
+        'title': data['title'],
+        'total_bookings': data['bookings'],
+        'total_revenue': data['revenue'],
+        'average_rating': data['rating'],
+        'booking_trends': [
+            {'date': '2024-01-08', 'bookings': int(data['bookings'] * 0.12)},
+            {'date': '2024-01-09', 'bookings': int(data['bookings'] * 0.15)},
+            {'date': '2024-01-10', 'bookings': int(data['bookings'] * 0.13)},
+            {'date': '2024-01-11', 'bookings': int(data['bookings'] * 0.16)},
+            {'date': '2024-01-12', 'bookings': int(data['bookings'] * 0.18)},
+            {'date': '2024-01-13', 'bookings': int(data['bookings'] * 0.14)},
+            {'date': '2024-01-14', 'bookings': int(data['bookings'] * 0.12)}
+        ],
+        'show_performance': [
+            {'time': '10:00-13:00', 'bookings': int(data['bookings'] * 0.25), 'revenue': int(data['revenue'] * 0.22)},
+            {'time': '14:00-17:00', 'bookings': int(data['bookings'] * 0.35), 'revenue': int(data['revenue'] * 0.38)},
+            {'time': '18:00-21:00', 'bookings': int(data['bookings'] * 0.40), 'revenue': int(data['revenue'] * 0.40)}
+        ]
+    })
+
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 10000))
     app.run(host='0.0.0.0', port=port)

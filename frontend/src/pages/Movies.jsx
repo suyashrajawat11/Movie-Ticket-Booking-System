@@ -19,10 +19,15 @@ export default function Movies() {
   const onCreate = async (e) => {
     e.preventDefault()
     try {
-      await createMovie(form)
+      const newMovie = await createMovie(form)
+      console.log('Movie created:', newMovie)
       setForm({ title: '', duration: 120, genre: '', language: '' })
-      load()
-    } catch (e) { alert(e.message) }
+      await load()
+      alert('Movie created successfully!')
+    } catch (e) { 
+      console.error('Error creating movie:', e)
+      alert('Error creating movie: ' + e.message) 
+    }
   }
 
   return (

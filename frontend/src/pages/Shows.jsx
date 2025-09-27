@@ -21,10 +21,15 @@ export default function Shows() {
   const onCreate = async (e) => {
     e.preventDefault()
     try {
-      await createShow(form)
+      const newShow = await createShow(form)
+      console.log('Show created:', newShow)
       setForm({ movie_id: '', hall_id: '', start_time: '', end_time: '', price: 200 })
-      setShows(await listShows())
-    } catch (e) { alert(e.message) }
+      await load()
+      alert('Show created successfully!')
+    } catch (e) { 
+      console.error('Error creating show:', e)
+      alert('Error creating show: ' + e.message) 
+    }
   }
 
   return (
