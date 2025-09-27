@@ -5,6 +5,145 @@ from flask import Flask, jsonify, request
 
 app = Flask(__name__)
 
+# In-memory storage for created items
+movies_storage = [
+    {
+        'id': 1,
+        'title': 'Avengers: Endgame',
+        'description': 'The epic conclusion to the Infinity Saga',
+        'duration': 181,
+        'release_date': '2019-04-26',
+        'genre': 'Action',
+        'language': 'English'
+    },
+    {
+        'id': 2,
+        'title': 'The Dark Knight',
+        'description': 'Batman faces the Joker in this acclaimed sequel',
+        'duration': 152,
+        'release_date': '2008-07-18',
+        'genre': 'Action',
+        'language': 'English'
+    },
+    {
+        'id': 3,
+        'title': 'Inception',
+        'description': 'A mind-bending thriller about dreams within dreams',
+        'duration': 148,
+        'release_date': '2010-07-16',
+        'genre': 'Sci-Fi',
+        'language': 'English'
+    },
+    {
+        'id': 4,
+        'title': 'Parasite',
+        'description': 'A masterpiece of social commentary',
+        'duration': 132,
+        'release_date': '2019-05-30',
+        'genre': 'Thriller',
+        'language': 'Korean'
+    },
+    {
+        'id': 5,
+        'title': 'Interstellar',
+        'description': 'A visually stunning space epic',
+        'duration': 169,
+        'release_date': '2014-11-07',
+        'genre': 'Sci-Fi',
+        'language': 'English'
+    }
+]
+
+theaters_storage = [
+    {
+        'id': 1,
+        'name': 'PVR Cinemas Phoenix',
+        'address': 'Phoenix Marketcity, Kurla West',
+        'city': 'Mumbai',
+        'state': 'Maharashtra',
+        'country': 'India',
+        'halls': [
+            {
+                'id': 1, 
+                'name': 'Screen 1', 
+                'total_seats': 180, 
+                'type': 'Premium',
+                'rows': [
+                    {'id': 1, 'row_number': 1, 'seat_count': 15},
+                    {'id': 2, 'row_number': 2, 'seat_count': 15},
+                    {'id': 3, 'row_number': 3, 'seat_count': 18},
+                    {'id': 4, 'row_number': 4, 'seat_count': 18},
+                    {'id': 5, 'row_number': 5, 'seat_count': 18},
+                    {'id': 6, 'row_number': 6, 'seat_count': 18},
+                    {'id': 7, 'row_number': 7, 'seat_count': 18},
+                    {'id': 8, 'row_number': 8, 'seat_count': 18},
+                    {'id': 9, 'row_number': 9, 'seat_count': 18},
+                    {'id': 10, 'row_number': 10, 'seat_count': 18}
+                ]
+            },
+            {
+                'id': 2, 
+                'name': 'Screen 2', 
+                'total_seats': 150, 
+                'type': 'Standard',
+                'rows': [
+                    {'id': 11, 'row_number': 1, 'seat_count': 12},
+                    {'id': 12, 'row_number': 2, 'seat_count': 12},
+                    {'id': 13, 'row_number': 3, 'seat_count': 15},
+                    {'id': 14, 'row_number': 4, 'seat_count': 15},
+                    {'id': 15, 'row_number': 5, 'seat_count': 15},
+                    {'id': 16, 'row_number': 6, 'seat_count': 15},
+                    {'id': 17, 'row_number': 7, 'seat_count': 15},
+                    {'id': 18, 'row_number': 8, 'seat_count': 15},
+                    {'id': 19, 'row_number': 9, 'seat_count': 15},
+                    {'id': 20, 'row_number': 10, 'seat_count': 21}
+                ]
+            }
+        ]
+    },
+    {
+        'id': 2,
+        'name': 'INOX R City',
+        'address': 'R City Mall, Ghatkopar West',
+        'city': 'Mumbai',
+        'state': 'Maharashtra',
+        'country': 'India',
+        'halls': [
+            {
+                'id': 4, 
+                'name': 'Screen A', 
+                'total_seats': 200, 
+                'type': 'IMAX',
+                'rows': [
+                    {'id': 31, 'row_number': 1, 'seat_count': 16},
+                    {'id': 32, 'row_number': 2, 'seat_count': 16},
+                    {'id': 33, 'row_number': 3, 'seat_count': 20},
+                    {'id': 34, 'row_number': 4, 'seat_count': 20},
+                    {'id': 35, 'row_number': 5, 'seat_count': 20},
+                    {'id': 36, 'row_number': 6, 'seat_count': 20},
+                    {'id': 37, 'row_number': 7, 'seat_count': 20},
+                    {'id': 38, 'row_number': 8, 'seat_count': 20},
+                    {'id': 39, 'row_number': 9, 'seat_count': 24},
+                    {'id': 40, 'row_number': 10, 'seat_count': 24}
+                ]
+            }
+        ]
+    }
+]
+
+shows_storage = [
+    {'id': 1, 'movie_id': 1, 'hall_id': 1, 'start_time': '2024-01-15T10:00:00', 'end_time': '2024-01-15T13:01:00', 'price': 350.0},
+    {'id': 2, 'movie_id': 1, 'hall_id': 1, 'start_time': '2024-01-15T14:00:00', 'end_time': '2024-01-15T17:01:00', 'price': 400.0},
+    {'id': 3, 'movie_id': 1, 'hall_id': 1, 'start_time': '2024-01-15T18:30:00', 'end_time': '2024-01-15T21:31:00', 'price': 450.0},
+    {'id': 4, 'movie_id': 2, 'hall_id': 4, 'start_time': '2024-01-15T11:00:00', 'end_time': '2024-01-15T13:32:00', 'price': 500.0},
+    {'id': 5, 'movie_id': 2, 'hall_id': 4, 'start_time': '2024-01-15T15:00:00', 'end_time': '2024-01-15T17:32:00', 'price': 550.0},
+    {'id': 6, 'movie_id': 3, 'hall_id': 2, 'start_time': '2024-01-15T12:00:00', 'end_time': '2024-01-15T14:28:00', 'price': 320.0},
+    {'id': 7, 'movie_id': 3, 'hall_id': 2, 'start_time': '2024-01-15T16:00:00', 'end_time': '2024-01-15T18:28:00', 'price': 380.0},
+    {'id': 8, 'movie_id': 4, 'hall_id': 4, 'start_time': '2024-01-15T13:30:00', 'end_time': '2024-01-15T15:42:00', 'price': 280.0},
+    {'id': 9, 'movie_id': 5, 'hall_id': 1, 'start_time': '2024-01-15T19:30:00', 'end_time': '2024-01-15T22:19:00', 'price': 600.0},
+    {'id': 10, 'movie_id': 5, 'hall_id': 2, 'start_time': '2024-01-15T21:00:00', 'end_time': '2024-01-15T23:49:00', 'price': 550.0}
+]
+
 # Simple CORS handling
 @app.after_request
 def after_request(response):
@@ -23,7 +162,7 @@ def movies():
     if request.method == 'POST':
         data = request.get_json()
         new_movie = {
-            'id': random.randint(100, 999),
+            'id': max([m['id'] for m in movies_storage] + [0]) + 1,
             'title': data.get('title', 'New Movie'),
             'description': data.get('description', 'A great movie'),
             'duration': data.get('duration', 120),
@@ -31,55 +170,10 @@ def movies():
             'genre': data.get('genre', 'Drama'),
             'language': data.get('language', 'English')
         }
+        movies_storage.append(new_movie)
         return jsonify(new_movie)
     
-    return jsonify([
-        {
-            'id': 1,
-            'title': 'Avengers: Endgame',
-            'description': 'The epic conclusion to the Infinity Saga',
-            'duration': 181,
-            'release_date': '2019-04-26',
-            'genre': 'Action',
-            'language': 'English'
-        },
-        {
-            'id': 2,
-            'title': 'The Dark Knight',
-            'description': 'Batman faces the Joker in this acclaimed sequel',
-            'duration': 152,
-            'release_date': '2008-07-18',
-            'genre': 'Action',
-            'language': 'English'
-        },
-        {
-            'id': 3,
-            'title': 'Inception',
-            'description': 'A mind-bending thriller about dreams within dreams',
-            'duration': 148,
-            'release_date': '2010-07-16',
-            'genre': 'Sci-Fi',
-            'language': 'English'
-        },
-        {
-            'id': 4,
-            'title': 'Parasite',
-            'description': 'A masterpiece of social commentary',
-            'duration': 132,
-            'release_date': '2019-05-30',
-            'genre': 'Thriller',
-            'language': 'Korean'
-        },
-        {
-            'id': 5,
-            'title': 'Interstellar',
-            'description': 'A visually stunning space epic',
-            'duration': 169,
-            'release_date': '2014-11-07',
-            'genre': 'Sci-Fi',
-            'language': 'English'
-        }
-    ])
+    return jsonify(movies_storage)
 
 # Theaters endpoint with CRUD
 @app.route('/api/theaters', methods=['GET', 'POST'])
@@ -87,7 +181,7 @@ def theaters():
     if request.method == 'POST':
         data = request.get_json()
         new_theater = {
-            'id': random.randint(100, 999),
+            'id': max([t['id'] for t in theaters_storage] + [0]) + 1,
             'name': data.get('name', 'New Theater'),
             'address': data.get('address', 'New Address'),
             'city': data.get('city', 'Mumbai'),
@@ -95,84 +189,10 @@ def theaters():
             'country': data.get('country', 'India'),
             'halls': data.get('halls', [])
         }
+        theaters_storage.append(new_theater)
         return jsonify(new_theater)
     
-    return jsonify([
-        {
-            'id': 1,
-            'name': 'PVR Cinemas Phoenix',
-            'address': 'Phoenix Marketcity, Kurla West',
-            'city': 'Mumbai',
-            'state': 'Maharashtra',
-            'country': 'India',
-            'halls': [
-                {
-                    'id': 1, 
-                    'name': 'Screen 1', 
-                    'total_seats': 180, 
-                    'type': 'Premium',
-                    'rows': [
-                        {'id': 1, 'row_number': 1, 'seat_count': 15},
-                        {'id': 2, 'row_number': 2, 'seat_count': 15},
-                        {'id': 3, 'row_number': 3, 'seat_count': 18},
-                        {'id': 4, 'row_number': 4, 'seat_count': 18},
-                        {'id': 5, 'row_number': 5, 'seat_count': 18},
-                        {'id': 6, 'row_number': 6, 'seat_count': 18},
-                        {'id': 7, 'row_number': 7, 'seat_count': 18},
-                        {'id': 8, 'row_number': 8, 'seat_count': 18},
-                        {'id': 9, 'row_number': 9, 'seat_count': 18},
-                        {'id': 10, 'row_number': 10, 'seat_count': 18}
-                    ]
-                },
-                {
-                    'id': 2, 
-                    'name': 'Screen 2', 
-                    'total_seats': 150, 
-                    'type': 'Standard',
-                    'rows': [
-                        {'id': 11, 'row_number': 1, 'seat_count': 12},
-                        {'id': 12, 'row_number': 2, 'seat_count': 12},
-                        {'id': 13, 'row_number': 3, 'seat_count': 15},
-                        {'id': 14, 'row_number': 4, 'seat_count': 15},
-                        {'id': 15, 'row_number': 5, 'seat_count': 15},
-                        {'id': 16, 'row_number': 6, 'seat_count': 15},
-                        {'id': 17, 'row_number': 7, 'seat_count': 15},
-                        {'id': 18, 'row_number': 8, 'seat_count': 15},
-                        {'id': 19, 'row_number': 9, 'seat_count': 15},
-                        {'id': 20, 'row_number': 10, 'seat_count': 21}
-                    ]
-                }
-            ]
-        },
-        {
-            'id': 2,
-            'name': 'INOX R City',
-            'address': 'R City Mall, Ghatkopar West',
-            'city': 'Mumbai',
-            'state': 'Maharashtra',
-            'country': 'India',
-            'halls': [
-                {
-                    'id': 4, 
-                    'name': 'Screen A', 
-                    'total_seats': 200, 
-                    'type': 'IMAX',
-                    'rows': [
-                        {'id': 31, 'row_number': 1, 'seat_count': 16},
-                        {'id': 32, 'row_number': 2, 'seat_count': 16},
-                        {'id': 33, 'row_number': 3, 'seat_count': 20},
-                        {'id': 34, 'row_number': 4, 'seat_count': 20},
-                        {'id': 35, 'row_number': 5, 'seat_count': 20},
-                        {'id': 36, 'row_number': 6, 'seat_count': 20},
-                        {'id': 37, 'row_number': 7, 'seat_count': 20},
-                        {'id': 38, 'row_number': 8, 'seat_count': 20},
-                        {'id': 39, 'row_number': 9, 'seat_count': 24},
-                        {'id': 40, 'row_number': 10, 'seat_count': 24}
-                    ]
-                }
-            ]
-        }
-    ])
+    return jsonify(theaters_storage)
 
 # Shows endpoint with CRUD
 @app.route('/api/shows', methods=['GET', 'POST'])
@@ -180,27 +200,17 @@ def shows():
     if request.method == 'POST':
         data = request.get_json()
         new_show = {
-            'id': random.randint(100, 999),
+            'id': max([s['id'] for s in shows_storage] + [0]) + 1,
             'movie_id': data.get('movie_id', 1),
             'hall_id': data.get('hall_id', 1),
             'start_time': data.get('start_time', '2024-01-15T18:00:00'),
             'end_time': data.get('end_time', '2024-01-15T20:00:00'),
             'price': data.get('price', 300.0)
         }
+        shows_storage.append(new_show)
         return jsonify(new_show)
     
-    return jsonify([
-        {'id': 1, 'movie_id': 1, 'hall_id': 1, 'start_time': '2024-01-15T10:00:00', 'end_time': '2024-01-15T13:01:00', 'price': 350.0},
-        {'id': 2, 'movie_id': 1, 'hall_id': 1, 'start_time': '2024-01-15T14:00:00', 'end_time': '2024-01-15T17:01:00', 'price': 400.0},
-        {'id': 3, 'movie_id': 1, 'hall_id': 1, 'start_time': '2024-01-15T18:30:00', 'end_time': '2024-01-15T21:31:00', 'price': 450.0},
-        {'id': 4, 'movie_id': 2, 'hall_id': 4, 'start_time': '2024-01-15T11:00:00', 'end_time': '2024-01-15T13:32:00', 'price': 500.0},
-        {'id': 5, 'movie_id': 2, 'hall_id': 4, 'start_time': '2024-01-15T15:00:00', 'end_time': '2024-01-15T17:32:00', 'price': 550.0},
-        {'id': 6, 'movie_id': 3, 'hall_id': 2, 'start_time': '2024-01-15T12:00:00', 'end_time': '2024-01-15T14:28:00', 'price': 320.0},
-        {'id': 7, 'movie_id': 3, 'hall_id': 2, 'start_time': '2024-01-15T16:00:00', 'end_time': '2024-01-15T18:28:00', 'price': 380.0},
-        {'id': 8, 'movie_id': 4, 'hall_id': 4, 'start_time': '2024-01-15T13:30:00', 'end_time': '2024-01-15T15:42:00', 'price': 280.0},
-        {'id': 9, 'movie_id': 5, 'hall_id': 1, 'start_time': '2024-01-15T19:30:00', 'end_time': '2024-01-15T22:19:00', 'price': 600.0},
-        {'id': 10, 'movie_id': 5, 'hall_id': 2, 'start_time': '2024-01-15T21:00:00', 'end_time': '2024-01-15T23:49:00', 'price': 550.0}
-    ])
+    return jsonify(shows_storage)
 
 @app.route('/api/health')
 def health():
