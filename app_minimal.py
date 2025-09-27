@@ -1,9 +1,11 @@
-from flask import Flask, jsonify
 import os
+import random
+from flask import Flask, jsonify, request
 
 app = Flask(__name__)
 
 # Simple CORS handling - no external library
+{{ ... }}
 @app.after_request
 def after_request(response):
     response.headers['Access-Control-Allow-Origin'] = '*'
@@ -453,6 +455,76 @@ def shows():
 @app.route('/api/health')
 def health():
     return jsonify({'status': 'healthy', 'message': 'API working'})
+
+@app.route('/api/bookings/availability')
+def booking_availability():
+    show_id = request.args.get('show_id')
+    if not show_id:
+        return jsonify({'error': 'show_id is required'}), 400
+    
+    # Generate realistic seat availability (some seats booked, some available)
+    import random
+    
+    # Get show info to determine hall
+    show_hall_map = {
+        '1': 1, '2': 1, '3': 1,  # Hall 1 (180 seats, rows A-J)
+        '4': 4, '5': 4, '6': 4,  # Hall 4 (200 seats, rows A-J) 
+        '7': 7, '8': 7, '9': 7,  # Hall 7 (170 seats, rows A-J)
+        '10': 10, '11': 10, '12': 10,  # Hall 10 (190 seats, rows A-J)
+        '13': 12, '14': 12, '15': 12,  # Hall 12 (80 seats, rows A-J)
+    }
+    
+    hall_id = show_hall_map.get(show_id, 1)
+    
+    # Define seat layouts for each hall
+    hall_layouts = {
+        1: [15, 15, 18, 18, 18, 18, 18, 18, 18, 18],  # Hall 1
+        4: [16, 16, 20, 20, 20, 20, 20, 20, 24, 24],  # Hall 4 (IMAX)
+        7: [15, 15, 17, 17, 17, 17, 17, 17, 19, 19],  # Hall 7
+        10: [17, 17, 19, 19, 19, 19, 19, 19, 21, 21], # Hall 10
+        12: [6, 6, 8, 8, 8, 8, 8, 8, 10, 10]         # Hall 12 (Luxury)
+    }
+    
+    layout = hall_layouts.get(hall_id, [15, 15, 18, 18, 18, 18, 18, 18, 18, 18])
+    
+    # Generate seat availability
+    availability = []
+    row_names = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J']
+    
+    for row_idx, seat_count in enumerate(layout):
+        row_name = row_names[row_idx]
+        for seat_num in range(1, seat_count + 1):
+            # Randomly make some seats booked (30% chance)
+            is_booked = random.random() < 0.3
+            availability.append({
+                'row': row_name,
+                'seat': seat_num,
+                'status': 'booked' if is_booked else 'available',
+                'seat_id': f"{row_name}{seat_num}"
+            })
+    
+    return jsonify({
+        'show_id': int(show_id),
+        'hall_id': hall_id,
+        'availability': availability
+    })
+
+@app.route('/api/bookings', methods=['POST'])
+def create_booking():
+    data = request.get_json()
+    
+    # Simulate booking creation
+    booking_id = random.randint(1000, 9999)
+    
+    return jsonify({
+        'booking_id': booking_id,
+        'show_id': data.get('show_id'),
+        'seats': data.get('seats', []),
+        'total_price': data.get('total_price', 0),
+        'status': 'confirmed',
+        'booking_reference': f"BK{booking_id}",
+        'message': 'Booking confirmed successfully!'
+    })
 
 @app.route('/api/analytics/overview')
 def analytics_overview():
