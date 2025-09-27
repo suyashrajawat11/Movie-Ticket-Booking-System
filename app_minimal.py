@@ -122,9 +122,60 @@ def theaters():
             'country': 'India',
             'pincode': '400070',
             'halls': [
-                {'id': 1, 'name': 'Screen 1', 'total_seats': 180, 'type': 'Premium'},
-                {'id': 2, 'name': 'Screen 2', 'total_seats': 150, 'type': 'Standard'},
-                {'id': 3, 'name': 'Screen 3', 'total_seats': 120, 'type': 'Standard'}
+                {
+                    'id': 1, 
+                    'name': 'Screen 1', 
+                    'total_seats': 180, 
+                    'type': 'Premium',
+                    'rows': [
+                        {'id': 1, 'name': 'A', 'seats': 15},
+                        {'id': 2, 'name': 'B', 'seats': 15},
+                        {'id': 3, 'name': 'C', 'seats': 18},
+                        {'id': 4, 'name': 'D', 'seats': 18},
+                        {'id': 5, 'name': 'E', 'seats': 18},
+                        {'id': 6, 'name': 'F', 'seats': 18},
+                        {'id': 7, 'name': 'G', 'seats': 18},
+                        {'id': 8, 'name': 'H', 'seats': 18},
+                        {'id': 9, 'name': 'I', 'seats': 18},
+                        {'id': 10, 'name': 'J', 'seats': 18}
+                    ]
+                },
+                {
+                    'id': 2, 
+                    'name': 'Screen 2', 
+                    'total_seats': 150, 
+                    'type': 'Standard',
+                    'rows': [
+                        {'id': 11, 'name': 'A', 'seats': 12},
+                        {'id': 12, 'name': 'B', 'seats': 12},
+                        {'id': 13, 'name': 'C', 'seats': 15},
+                        {'id': 14, 'name': 'D', 'seats': 15},
+                        {'id': 15, 'name': 'E', 'seats': 15},
+                        {'id': 16, 'name': 'F', 'seats': 15},
+                        {'id': 17, 'name': 'G', 'seats': 15},
+                        {'id': 18, 'name': 'H', 'seats': 15},
+                        {'id': 19, 'name': 'I', 'seats': 15},
+                        {'id': 20, 'name': 'J', 'seats': 21}
+                    ]
+                },
+                {
+                    'id': 3, 
+                    'name': 'Screen 3', 
+                    'total_seats': 120, 
+                    'type': 'Standard',
+                    'rows': [
+                        {'id': 21, 'name': 'A', 'seats': 10},
+                        {'id': 22, 'name': 'B', 'seats': 10},
+                        {'id': 23, 'name': 'C', 'seats': 12},
+                        {'id': 24, 'name': 'D', 'seats': 12},
+                        {'id': 25, 'name': 'E', 'seats': 12},
+                        {'id': 26, 'name': 'F', 'seats': 12},
+                        {'id': 27, 'name': 'G', 'seats': 12},
+                        {'id': 28, 'name': 'H', 'seats': 12},
+                        {'id': 29, 'name': 'I', 'seats': 14},
+                        {'id': 30, 'name': 'J', 'seats': 14}
+                    ]
+                }
             ]
         },
         {
@@ -136,9 +187,60 @@ def theaters():
             'country': 'India',
             'pincode': '400086',
             'halls': [
-                {'id': 4, 'name': 'Screen A', 'total_seats': 200, 'type': 'IMAX'},
-                {'id': 5, 'name': 'Screen B', 'total_seats': 160, 'type': 'Premium'},
-                {'id': 6, 'name': 'Screen C', 'total_seats': 140, 'type': 'Standard'}
+                {
+                    'id': 4, 
+                    'name': 'Screen A', 
+                    'total_seats': 200, 
+                    'type': 'IMAX',
+                    'rows': [
+                        {'id': 31, 'name': 'A', 'seats': 16},
+                        {'id': 32, 'name': 'B', 'seats': 16},
+                        {'id': 33, 'name': 'C', 'seats': 20},
+                        {'id': 34, 'name': 'D', 'seats': 20},
+                        {'id': 35, 'name': 'E', 'seats': 20},
+                        {'id': 36, 'name': 'F', 'seats': 20},
+                        {'id': 37, 'name': 'G', 'seats': 20},
+                        {'id': 38, 'name': 'H', 'seats': 20},
+                        {'id': 39, 'name': 'I', 'seats': 24},
+                        {'id': 40, 'name': 'J', 'seats': 24}
+                    ]
+                },
+                {
+                    'id': 5, 
+                    'name': 'Screen B', 
+                    'total_seats': 160, 
+                    'type': 'Premium',
+                    'rows': [
+                        {'id': 41, 'name': 'A', 'seats': 14},
+                        {'id': 42, 'name': 'B', 'seats': 14},
+                        {'id': 43, 'name': 'C', 'seats': 16},
+                        {'id': 44, 'name': 'D', 'seats': 16},
+                        {'id': 45, 'name': 'E', 'seats': 16},
+                        {'id': 46, 'name': 'F', 'seats': 16},
+                        {'id': 47, 'name': 'G', 'seats': 16},
+                        {'id': 48, 'name': 'H', 'seats': 16},
+                        {'id': 49, 'name': 'I', 'seats': 18},
+                        {'id': 50, 'name': 'J', 'seats': 18}
+                    ]
+                },
+                {
+                    'id': 6, 
+                    'name': 'Screen C', 
+                    'total_seats': 140, 
+                    'type': 'Standard',
+                    'rows': [
+                        {'id': 51, 'name': 'A', 'seats': 12},
+                        {'id': 52, 'name': 'B', 'seats': 12},
+                        {'id': 53, 'name': 'C', 'seats': 14},
+                        {'id': 54, 'name': 'D', 'seats': 14},
+                        {'id': 55, 'name': 'E', 'seats': 14},
+                        {'id': 56, 'name': 'F', 'seats': 14},
+                        {'id': 57, 'name': 'G', 'seats': 14},
+                        {'id': 58, 'name': 'H', 'seats': 14},
+                        {'id': 59, 'name': 'I', 'seats': 16},
+                        {'id': 60, 'name': 'J', 'seats': 16}
+                    ]
+                }
             ]
         },
         {
@@ -150,9 +252,60 @@ def theaters():
             'country': 'India',
             'pincode': '400053',
             'halls': [
-                {'id': 7, 'name': 'Audi 1', 'total_seats': 170, 'type': 'Premium'},
-                {'id': 8, 'name': 'Audi 2', 'total_seats': 130, 'type': 'Standard'},
-                {'id': 9, 'name': 'Audi 3', 'total_seats': 110, 'type': 'Standard'}
+                {
+                    'id': 7, 
+                    'name': 'Audi 1', 
+                    'total_seats': 170, 
+                    'type': 'Premium',
+                    'rows': [
+                        {'id': 61, 'name': 'A', 'seats': 15},
+                        {'id': 62, 'name': 'B', 'seats': 15},
+                        {'id': 63, 'name': 'C', 'seats': 17},
+                        {'id': 64, 'name': 'D', 'seats': 17},
+                        {'id': 65, 'name': 'E', 'seats': 17},
+                        {'id': 66, 'name': 'F', 'seats': 17},
+                        {'id': 67, 'name': 'G', 'seats': 17},
+                        {'id': 68, 'name': 'H', 'seats': 17},
+                        {'id': 69, 'name': 'I', 'seats': 19},
+                        {'id': 70, 'name': 'J', 'seats': 19}
+                    ]
+                },
+                {
+                    'id': 8, 
+                    'name': 'Audi 2', 
+                    'total_seats': 130, 
+                    'type': 'Standard',
+                    'rows': [
+                        {'id': 71, 'name': 'A', 'seats': 11},
+                        {'id': 72, 'name': 'B', 'seats': 11},
+                        {'id': 73, 'name': 'C', 'seats': 13},
+                        {'id': 74, 'name': 'D', 'seats': 13},
+                        {'id': 75, 'name': 'E', 'seats': 13},
+                        {'id': 76, 'name': 'F', 'seats': 13},
+                        {'id': 77, 'name': 'G', 'seats': 13},
+                        {'id': 78, 'name': 'H', 'seats': 13},
+                        {'id': 79, 'name': 'I', 'seats': 15},
+                        {'id': 80, 'name': 'J', 'seats': 15}
+                    ]
+                },
+                {
+                    'id': 9, 
+                    'name': 'Audi 3', 
+                    'total_seats': 110, 
+                    'type': 'Standard',
+                    'rows': [
+                        {'id': 81, 'name': 'A', 'seats': 9},
+                        {'id': 82, 'name': 'B', 'seats': 9},
+                        {'id': 83, 'name': 'C', 'seats': 11},
+                        {'id': 84, 'name': 'D', 'seats': 11},
+                        {'id': 85, 'name': 'E', 'seats': 11},
+                        {'id': 86, 'name': 'F', 'seats': 11},
+                        {'id': 87, 'name': 'G', 'seats': 11},
+                        {'id': 88, 'name': 'H', 'seats': 11},
+                        {'id': 89, 'name': 'I', 'seats': 13},
+                        {'id': 90, 'name': 'J', 'seats': 13}
+                    ]
+                }
             ]
         },
         {
@@ -164,8 +317,42 @@ def theaters():
             'country': 'India',
             'pincode': '400037',
             'halls': [
-                {'id': 10, 'name': 'Hall 1', 'total_seats': 190, 'type': 'Premium'},
-                {'id': 11, 'name': 'Hall 2', 'total_seats': 155, 'type': 'Standard'}
+                {
+                    'id': 10, 
+                    'name': 'Hall 1', 
+                    'total_seats': 190, 
+                    'type': 'Premium',
+                    'rows': [
+                        {'id': 91, 'name': 'A', 'seats': 17},
+                        {'id': 92, 'name': 'B', 'seats': 17},
+                        {'id': 93, 'name': 'C', 'seats': 19},
+                        {'id': 94, 'name': 'D', 'seats': 19},
+                        {'id': 95, 'name': 'E', 'seats': 19},
+                        {'id': 96, 'name': 'F', 'seats': 19},
+                        {'id': 97, 'name': 'G', 'seats': 19},
+                        {'id': 98, 'name': 'H', 'seats': 19},
+                        {'id': 99, 'name': 'I', 'seats': 21},
+                        {'id': 100, 'name': 'J', 'seats': 21}
+                    ]
+                },
+                {
+                    'id': 11, 
+                    'name': 'Hall 2', 
+                    'total_seats': 155, 
+                    'type': 'Standard',
+                    'rows': [
+                        {'id': 101, 'name': 'A', 'seats': 13},
+                        {'id': 102, 'name': 'B', 'seats': 13},
+                        {'id': 103, 'name': 'C', 'seats': 15},
+                        {'id': 104, 'name': 'D', 'seats': 15},
+                        {'id': 105, 'name': 'E', 'seats': 15},
+                        {'id': 106, 'name': 'F', 'seats': 15},
+                        {'id': 107, 'name': 'G', 'seats': 15},
+                        {'id': 108, 'name': 'H', 'seats': 15},
+                        {'id': 109, 'name': 'I', 'seats': 17},
+                        {'id': 110, 'name': 'J', 'seats': 22}
+                    ]
+                }
             ]
         },
         {
@@ -177,8 +364,42 @@ def theaters():
             'country': 'India',
             'pincode': '400050',
             'halls': [
-                {'id': 12, 'name': 'Gold Class', 'total_seats': 80, 'type': 'Luxury'},
-                {'id': 13, 'name': 'Silver Screen', 'total_seats': 145, 'type': 'Standard'}
+                {
+                    'id': 12, 
+                    'name': 'Gold Class', 
+                    'total_seats': 80, 
+                    'type': 'Luxury',
+                    'rows': [
+                        {'id': 111, 'name': 'A', 'seats': 6},
+                        {'id': 112, 'name': 'B', 'seats': 6},
+                        {'id': 113, 'name': 'C', 'seats': 8},
+                        {'id': 114, 'name': 'D', 'seats': 8},
+                        {'id': 115, 'name': 'E', 'seats': 8},
+                        {'id': 116, 'name': 'F', 'seats': 8},
+                        {'id': 117, 'name': 'G', 'seats': 8},
+                        {'id': 118, 'name': 'H', 'seats': 8},
+                        {'id': 119, 'name': 'I', 'seats': 10},
+                        {'id': 120, 'name': 'J', 'seats': 10}
+                    ]
+                },
+                {
+                    'id': 13, 
+                    'name': 'Silver Screen', 
+                    'total_seats': 145, 
+                    'type': 'Standard',
+                    'rows': [
+                        {'id': 121, 'name': 'A', 'seats': 12},
+                        {'id': 122, 'name': 'B', 'seats': 12},
+                        {'id': 123, 'name': 'C', 'seats': 14},
+                        {'id': 124, 'name': 'D', 'seats': 14},
+                        {'id': 125, 'name': 'E', 'seats': 14},
+                        {'id': 126, 'name': 'F', 'seats': 14},
+                        {'id': 127, 'name': 'G', 'seats': 14},
+                        {'id': 128, 'name': 'H', 'seats': 14},
+                        {'id': 129, 'name': 'I', 'seats': 16},
+                        {'id': 130, 'name': 'J', 'seats': 21}
+                    ]
+                }
             ]
         }
     ])
