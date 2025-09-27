@@ -5,6 +5,15 @@ from app.controllers.booking_controller import BookingController
 
 api_bp = Blueprint('api', __name__)
 
+@api_bp.route('/health', methods=['GET'])
+def health_check():
+    """Health check endpoint"""
+    return jsonify({
+        'status': 'healthy',
+        'message': 'Movie Ticket Booking API is running',
+        'version': '1.0.0'
+    })
+
 @api_bp.route('/movies', methods=['GET'])
 def get_movies():
     return MovieController.get_all_movies()

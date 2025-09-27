@@ -13,7 +13,17 @@ def create_app(config_name='default'):
     
     db.init_app(app)
     migrate.init_app(app, db)
-    CORS(app)
+    
+    # Configure CORS for production
+    if config_name == 'production':
+        CORS(app, origins=[
+            'https://dashing-horse-e44477.netlify.app',
+            'https://*.netlify.app',
+            'http://localhost:5173',  # For local development
+            'http://localhost:3000'   # Alternative local port
+        ])
+    else:
+        CORS(app)  # Allow all origins in development
     
     from .routes.api import api_bp
     app.register_blueprint(api_bp, url_prefix='/api')
