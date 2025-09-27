@@ -11,13 +11,11 @@ from flask_cors import CORS
 # Create Flask app
 app = Flask(__name__)
 
-# Configure CORS
-CORS(app, origins=[
-    'https://dashing-horse-e44477.netlify.app',
-    'https://*.netlify.app',
-    'http://localhost:5173',
-    'http://localhost:3000'
-])
+# Configure CORS - Allow all origins for now
+CORS(app, 
+     origins=['*'],
+     allow_headers=['Content-Type', 'Authorization'],
+     methods=['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'])
 
 # Root route
 @app.route('/')
