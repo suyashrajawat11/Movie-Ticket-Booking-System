@@ -33,14 +33,21 @@ export default function Booking() {
   useEffect(() => { (async () => {
     if (selection.show_id) {
       const data = await checkAvailability(selection.show_id)
-      const seats = data.seats.map(s => ({
+      const seats = data.availability.map(s => ({
         seat_id: s.seat_id,
-        row_id: s.row_id,
+        row_id: s.row_number,
         seat_number: s.seat_number,
-        is_aisle: s.is_aisle,
-        is_available: s.is_available
+        is_aisle: false,
+        is_available: s.status === 'available'
       }))
-      setAvailability({ ...data, seats })
+      const availableCount = seats.filter(s => s.is_available).length
+      setAvailability({ 
+        show_id: data.show_id,
+        hall_id: data.hall_id,
+        seats,
+        available_seats: availableCount,
+        total_seats: seats.length
+      })
     } else {
       setAvailability(null)
     }
