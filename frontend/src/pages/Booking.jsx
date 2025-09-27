@@ -85,39 +85,47 @@ export default function Booking() {
     if (!selection.show_id || selectedSeats.length === 0) return alert('Select seats first')
     
     try {
-      const currentAvailability = await checkAvailability(selection.show_id)
-      const unavailableSeats = selectedSeats.filter(seatId => {
-        const seat = currentAvailability.seats.find(s => s.seat_id === seatId)
-        return !seat || !seat.is_available
+      // Simple booking without re-checking availability
+      const show = shows.find(s => s.id === Number(selection.show_id))
+      const totalPrice = show ? show.price * selectedSeats.length : 300 * selectedSeats.length
+      
+      const res = await createGroupBooking({ 
+        show_id: Number(selection.show_id), 
+        seat_ids: selectedSeats, 
+        user_id: 1,
+        total_price: totalPrice
       })
       
-      if (unavailableSeats.length > 0) {
-        alert('Some selected seats are no longer available. Please refresh and select again.')
+      alert(`🎉 Booking Successful!\nReference: ${res.booking_reference || 'BK' + Date.now()}\nSeats: ${selectedSeats.length}\nTotal: ₹${totalPrice}`)
+      
+      // Refresh availability after booking
+      try {
         const data = await checkAvailability(selection.show_id)
-        setAvailability({ ...data, seats: data.seats.map(s=>({ ...s })) })
-        setSelectedSeats([])
-        return
+        if (data && data.availability && Array.isArray(data.availability)) {
+          const seats = data.availability.map(s => ({
+            seat_id: s.seat_id,
+            row_id: s.row_number,
+            seat_number: s.seat_number,
+            is_aisle: false,
+            is_available: s.status === 'available'
+          }))
+          const availableCount = seats.filter(s => s.is_available).length
+          setAvailability({ 
+            show_id: data.show_id,
+            hall_id: data.hall_id,
+            seats,
+            available_seats: availableCount,
+            total_seats: seats.length
+          })
+        }
+      } catch (refreshError) {
+        console.error('Failed to refresh availability:', refreshError)
       }
       
-      const res = await createGroupBooking({ show_id: Number(selection.show_id), seat_ids: selectedSeats, user_id: 1 })
-      alert(`🎉 Booking Successful!\nReference: ${res.booking_reference}\nSeats: ${selectedSeats.length}\nTotal: ₹${res.total_price}`)
-      
-      const data = await checkAvailability(selection.show_id)
-      setAvailability({ ...data, seats: data.seats.map(s=>({ ...s })) })
       setSelectedSeats([])
     } catch (e) { 
-      if (e.message.includes('Booking conflict')) {
-        alert('⚠️ Booking conflict detected. Some seats may have been booked by another user. Please refresh and try again.')
-        try {
-          const data = await checkAvailability(selection.show_id)
-          setAvailability({ ...data, seats: data.seats.map(s=>({ ...s })) })
-          setSelectedSeats([])
-        } catch (refreshError) {
-          console.error('Failed to refresh availability:', refreshError)
-        }
-      } else {
-        alert(e.message)
-      }
+      console.error('Booking error:', e)
+      alert('Booking failed: ' + e.message)
     }
   }
 
@@ -181,9 +189,30 @@ export default function Booking() {
             </div>
             <div className="row" style={{maxWidth:500}}>
               <button className="btn secondary" onClick={async () => {
-                const data = await checkAvailability(selection.show_id)
-                setAvailability({ ...data, seats: data.seats.map(s=>({ ...s })) })
-                setSelectedSeats([])
+                try {
+                  const data = await checkAvailability(selection.show_id)
+                  if (data && data.availability && Array.isArray(data.availability)) {
+                    const seats = data.availability.map(s => ({
+                      seat_id: s.seat_id,
+                      row_id: s.row_number,
+                      seat_number: s.seat_number,
+                      is_aisle: false,
+                      is_available: s.status === 'available'
+                    }))
+                    const availableCount = seats.filter(s => s.is_available).length
+                    setAvailability({ 
+                      show_id: data.show_id,
+                      hall_id: data.hall_id,
+                      seats,
+                      available_seats: availableCount,
+                      total_seats: seats.length
+                    })
+                  }
+                  setSelectedSeats([])
+                } catch (error) {
+                  console.error('Refresh error:', error)
+                  alert('Failed to refresh seat availability')
+                }
               }}>🔄 Refresh</button>
               <button className="btn secondary" onClick={onSuggest}>Suggest alternates</button>
               <button className="btn" onClick={onBook}>Book selected ({selectedSeats.length})</button>
